@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEAFi Credit Assessment Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-weight: 300;
+            font-size: 36px;
+            margin-bottom: 60px;
+            color: #000;
+        }
+        
+        .flow-section {
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .section-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #000;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-left: 44px;
+        }
+        
+        .item-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+        
+        .item-card:hover {
+            border-color: #000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .item-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .item-list {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .item-list li {
+            list-style: none;
+            padding: 4px 0;
+            position: relative;
+            padding-left: 16px;
+        }
+        
+        .item-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #999;
+        }
+        
+        /* Connecting lines */
+        .flow-section:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 16px;
+            bottom: -40px;
+            width: 1px;
+            height: 40px;
+            background: #ddd;
+        }
+        
+        /* Special sections */
+        .extraction-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-left: 44px;
+        }
+        
+        .extraction-category {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .extraction-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .metric {
+            font-size: 13px;
+            color: #666;
+            padding: 8px 12px;
+            background: #fff;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        /* Output section */
+        .output-section {
+            background: #000;
+            color: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            margin-left: 44px;
+        }
+        
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        .output-item {
+            text-align: center;
+        }
+        
+        .output-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        
+        .output-value {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        /* Icons */
+        .icon {
+            font-size: 18px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .extraction-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .output-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KEAFi Credit Assessment Pipeline</h1>
+        
+        <!-- Section 1: User Inputs -->
+        <div class="flow-section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <div class="section-title">User Inputs</div>
+            </div>
+            
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">📄</span>
+                        Financial Documents
+                    </div>
+                    <ul class="item-list">
+                        <li>2 Years Audited Statements</li>
+                        <li>6-12 Months Management Accounts</li>
+                        <li>Balance Sheet & P&L</li>
+                        <li>Cash Flow Statements</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">🏦</span>
+                        Banking Records
+                    </div>
+                    <ul class="item-list">
+                        <li>6 Months Bank Statements</li>
+                        <li>Transaction History (PDF/CSV)</li>
+                        <li>Account Balances</li>
+                        <li>Overdraft Records</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">💼</span>
+                        Business Operations
+                    </div>
+                    <ul class="item-list">
+                        <li>Aged Receivables Report</li>
+                        <li>Aged Payables Report</li>
+                        <li>Top 10 Customers List</li>
+                        <li>Top 10 Suppliers List</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">⚖️</span>
+                        Legal & Compliance
+                    </div>
+                    <ul class="item-list">
+                        <li>Trade License</li>
+                        <li>VAT Returns (3 Recent)</li>
+                        <li>Tax Clearance Certificate</li>
+                        <li>Existing Loan Details</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">📝</span>
+                        Company Information
+                    </div>
+                    <ul class="item-list">
+                        <li>Years in Business</li>
+                        <li>Employee Count</li>
+                        <li>Industry Sector</li>
+                        <li>Annual Revenue Range</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">🧾</span>
+                        Invoice Details
+                    </div>
+                    <ul class="item-list">
+                        <li>Invoice Copy</li>
+                        <li>Invoice Amount</li>
+                        <li>Payment Terms (Net 30/60/90)</li>
+                        <li>Buyer Company Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 2: AI Extraction -->
+        <div class="flow-section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <div class="section-title">AI-Powered Extraction</div>
+            </div>
+            
+            <div class="extraction-grid">
+                <div class="extraction-category">
+                    <div class="extraction-title">📊 Financial Data Extraction</div>
+                    <div class="metric-grid">
+                        <div class="metric">Total Assets</div>
+                        <div class="metric">Current Assets</div>
+                        <div class="metric">Cash & Equivalents</div>
+                        <div class="metric">Accounts Receivable</div>
+                        <div class="metric">Inventory</div>
+                        <div class="metric">Fixed Assets</div>
+                        <div class="metric">Total Liabilities</div>
+                        <div class="metric">Shareholders Equity</div>
+                        <div class="metric">Annual Revenue</div>
+                        <div class="metric">COGS</div>
+                        <div class="metric">Operating Income</div>
+                        <div class="metric">Net Income</div>
+                    </div>
+                </div>
+                
+                <div class="extraction-category">
+                    <div class="extraction-title">🏦 Banking Behavior Analysis</div>
+                    <div class="metric-grid">
+                        <div class="metric">Daily Balance Patterns</div>
+                        <div class="metric">Monthly Avg Balances</div>
+                        <div class="metric">Minimum Balances</div>
+                        <div class="metric">Transaction Volumes</div>
+                        <div class="metric">Large Transactions</div>
+                        <div class="metric">Payment Timing</div>
+                        <div class="metric">Overdraft Incidents</div>
+                        <div class="metric">Recovery Times</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Feature Engineering -->
+        <div class="flow-section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <div class="section-title">Feature Engineering</div>
+            </div>
+            
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">💧</span>
+                        Liquidity Ratios
+                    </div>
+                    <ul class="item-list">
+                        <li>Current Ratio</li>
+                        <li>Quick Ratio</li>
+                        <li>Cash Ratio</li>
+                        <li>Working Capital Ratio</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">📈</span>
+                        Profitability Metrics
+                    </div>
+                    <ul class="item-list">
+                        <li>Gross Margin</li>
+                        <li>Net Margin</li>
+                        <li>Operating Margin</li>
+                        <li>Return on Assets (ROA)</li>
+                        <li>Return on Equity (ROE)</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">⚖️</span>
+                        Leverage Indicators
+                    </div>
+                    <ul class="item-list">
+                        <li>Debt to Equity</li>
+                        <li>Debt to Assets</li>
+                        <li>Interest Coverage</li>
+                        <li>Debt Service Coverage</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">⚡</span>
+                        Efficiency Ratios
+                    </div>
+                    <ul class="item-list">
+                        <li>Asset Turnover</li>
+                        <li>Receivables Turnover</li>
+                        <li>Inventory Turnover</li>
+                        <li>Payables Turnover</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">🎯</span>
+                        Behavioral Metrics
+                    </div>
+                    <ul class="item-list">
+                        <li>Balance Stability Score</li>
+                        <li>Transaction Regularity</li>
+                        <li>Cash Management Score</li>
+                        <li>Overdraft Frequency</li>
+                        <li>Payment Punctuality</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">🔍</span>
+                        Risk Indicators
+                    </div>
+                    <ul class="item-list">
+                        <li>Customer Concentration</li>
+                        <li>AR Quality Score</li>
+                        <li>Bad Debt Risk</li>
+                        <li>Collection Efficiency</li>
+                        <li>Revenue Growth Trends</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: External Enrichment -->
+        <div class="flow-section">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <div class="section-title">External Data Integration</div>
+            </div>
+            
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">🏭</span>
+                        Industry Data
+                    </div>
+                    <ul class="item-list">
+                        <li>Industry Default Rates</li>
+                        <li>Sector Benchmarks</li>
+                        <li>Growth Rate Comparisons</li>
+                        <li>Industry Risk Scores</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">🌍</span>
+                        Economic Indicators
+                    </div>
+                    <ul class="item-list">
+                        <li>GDP Growth Rate</li>
+                        <li>Inflation Rate</li>
+                        <li>Interest Rate Environment</li>
+                        <li>Currency Stability</li>
+                    </ul>
+                </div>
+                
+                <div class="item-card">
+                    <div class="item-title">
+                        <span class="icon">📊</span>
+                        Credit Bureau
+                    </div>
+                    <ul class="item-list">
+                        <li>Business Credit Score</li>
+                        <li>Payment History</li>
+                        <li>Credit Utilization</li>
+                        <li>Credit History Length</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 5: Risk Assessment -->
+        <div class="flow-section">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <div class="section-title">Final Credit Assessment</div>
+            </div>
+            
+            <div class="output-section">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <h3 style="font-size: 20px; font-weight: 400;">Comprehensive Risk Analysis</h3>
+                </div>
+                
+                <div class="output-grid">
+                    <div class="output-item">
+                        <div class="output-label">Financial Risk</div>
+                        <div class="output-value">Score</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-label">Operational Risk</div>
+                        <div class="output-value">Score</div>
+                    </div>
+                    <div class="output-item">
+                        <div class="output-label">Behavioral Risk</div>
+                        <div class="output-value">Score</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <div class="output-label">Final Credit Decision</div>
+                    <div class="output-value" style="font-size: 36px; margin-top: 12px;">RISK SCORE</div>
+                    <div style="margin-top: 16px; font-size: 14px; opacity: 0.8;">
+                        Low Risk | Medium Risk | High Risk
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
