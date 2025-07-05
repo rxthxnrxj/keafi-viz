@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KEAFi Credit Assessment Pipeline</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +12,7 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background: #f8fafb;
             color: #1a1d23;
             line-height: 1.6;
@@ -44,6 +43,71 @@
             font-size: 16px;
             color: #64748b;
             font-weight: 400;
+        }
+        
+        /* Hover hint */
+        .hover-hint {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+        
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #cbd5e1;
+        }
+        
+        .tooltip::after {
+            content: attr(data-formula);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-line;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            min-width: 200px;
+            text-align: left;
+            line-height: 1.4;
+        }
+        
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            border: 5px solid transparent;
+            border-top-color: #2d3748;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1001;
+        }
+        
+        .tooltip:hover::after,
+        .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-6px);
+        }
+        
+        .tooltip:hover::before {
+            transform: translateX(-50%) translateY(-1px);
         }
         
         /* Pipeline Section */
@@ -212,7 +276,7 @@
         .metric-value {
             font-weight: 500;
             color: #0f172a;
-            font-family: 'SF Mono', 'Monaco', monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 12px;
         }
         
@@ -265,6 +329,7 @@
             border-radius: 6px;
             border: 1px solid #f1f5f9;
             transition: all 0.15s ease;
+            position: relative;
         }
         
         .feature-item:hover {
@@ -316,6 +381,9 @@
             border-radius: 12px;
             padding: 20px;
             text-align: center;
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
         }
         
         .risk-label {
@@ -365,6 +433,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            cursor: help;
         }
         
         .final-rating {
@@ -424,6 +494,52 @@
             padding: 6px 12px;
             background: #f8fafc;
             border-radius: 6px;
+        }
+        
+        /* Dark tooltip for risk cards */
+        .risk-card::after {
+            content: attr(data-formula);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        .risk-card::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1001;
+        }
+        
+        .risk-card:hover::after,
+        .risk-card:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-6px);
+        }
+        
+        .risk-card:hover::before {
+            transform: translateX(-50%) translateY(-1px);
         }
         
         /* Responsive */
@@ -570,6 +686,8 @@
             </div>
             <p class="section-description">Advanced OCR and NLP extract structured data from unstructured documents</p>
             
+            <div class="hover-hint">💡 Hover over calculated metrics to see formulas</div>
+            
             <div class="metrics-container">
                 <div class="metrics-header">
                     <span>🤖</span>
@@ -662,7 +780,7 @@
                     
                     <div class="metric-group">
                         <div class="metric-group-title">Banking Behavior</div>
-                        <div class="metric-item">
+                        <div class="metric-item tooltip" data-formula="avg_balance = mean(daily_balances)">
                             <span class="metric-name">Avg Daily Balance</span>
                             <span class="metric-value">AED 290K</span>
                         </div>
@@ -674,7 +792,7 @@
                             <span class="metric-name">Monthly Transactions</span>
                             <span class="metric-value">~150</span>
                         </div>
-                        <div class="metric-item">
+                        <div class="metric-item tooltip" data-formula="overdraft_frequency = overdraft_days / total_banking_days">
                             <span class="metric-name">Overdraft Days</span>
                             <span class="metric-value">7/180</span>
                         </div>
@@ -682,7 +800,7 @@
                             <span class="metric-name">Account Age</span>
                             <span class="metric-value">36 months</span>
                         </div>
-                        <div class="metric-item">
+                        <div class="metric-item tooltip" data-formula="payment_delay = sum(delays) / number_of_payments">
                             <span class="metric-name">Payment Delay</span>
                             <span class="metric-value">28.5 days</span>
                         </div>
@@ -700,6 +818,8 @@
             </div>
             <p class="section-description">Transform raw data into sophisticated financial metrics and risk indicators</p>
             
+            <div class="hover-hint">💡 Hover over any metric to see its calculation formula</div>
+            
             <div class="feature-grid">
                 <div class="feature-category">
                     <div class="feature-category-title">
@@ -707,18 +827,18 @@
                         <span>Financial Ratios</span>
                     </div>
                     <div class="feature-list">
-                        <div class="feature-item">Current Ratio: 1.50</div>
-                        <div class="feature-item">Quick Ratio: 1.06</div>
-                        <div class="feature-item">Cash Ratio: 0.38</div>
-                        <div class="feature-item">Working Capital: 0.16</div>
-                        <div class="feature-item">Gross Margin: 34.4%</div>
-                        <div class="feature-item">Net Margin: 5.6%</div>
-                        <div class="feature-item">Operating Margin: 7.8%</div>
-                        <div class="feature-item">ROA: 7.2%</div>
-                        <div class="feature-item">ROE: 25.7%</div>
-                        <div class="feature-item">Debt/Equity: 1.14</div>
-                        <div class="feature-item">Interest Coverage: 5.6x</div>
-                        <div class="feature-item">DSCR: 1.83</div>
+                        <div class="feature-item tooltip" data-formula="current_ratio = current_assets / current_liabilities">Current Ratio: 1.50</div>
+                        <div class="feature-item tooltip" data-formula="quick_ratio = (current_assets - inventory) / current_liabilities">Quick Ratio: 1.06</div>
+                        <div class="feature-item tooltip" data-formula="cash_ratio = cash_and_equivalents / current_liabilities">Cash Ratio: 0.38</div>
+                        <div class="feature-item tooltip" data-formula="working_capital_ratio = (current_assets - current_liabilities) / total_assets">Working Capital: 0.16</div>
+                        <div class="feature-item tooltip" data-formula="gross_margin = (revenue - cogs) / revenue">Gross Margin: 34.4%</div>
+                        <div class="feature-item tooltip" data-formula="net_margin = net_income / revenue">Net Margin: 5.6%</div>
+                        <div class="feature-item tooltip" data-formula="operating_margin = operating_income / revenue">Operating Margin: 7.8%</div>
+                        <div class="feature-item tooltip" data-formula="return_on_assets = net_income / total_assets">ROA: 7.2%</div>
+                        <div class="feature-item tooltip" data-formula="return_on_equity = net_income / shareholders_equity">ROE: 25.7%</div>
+                        <div class="feature-item tooltip" data-formula="debt_to_equity = total_debt / total_equity">Debt/Equity: 1.14</div>
+                        <div class="feature-item tooltip" data-formula="interest_coverage = operating_income / interest_expense">Interest Coverage: 5.6x</div>
+                        <div class="feature-item tooltip" data-formula="debt_service_coverage = operating_cash_flow / (total_debt * 0.15)">DSCR: 1.83</div>
                     </div>
                 </div>
                 
@@ -728,17 +848,17 @@
                         <span>Behavioral Analytics</span>
                     </div>
                     <div class="feature-list">
-                        <div class="feature-item">Balance Stability: 82%</div>
-                        <div class="feature-item">Min Balance Ratio: 0.12</div>
-                        <div class="feature-item">Transaction Regular: 91%</div>
-                        <div class="feature-item">Volume Trend: +2.3%</div>
-                        <div class="feature-item">Overdraft Freq: 3.9%</div>
-                        <div class="feature-item">Recovery Speed: 1.7d</div>
-                        <div class="feature-item">Cash Mgmt Score: 1.09</div>
-                        <div class="feature-item">Balance Volatility: 0.18</div>
-                        <div class="feature-item">Payment Punctual: 85%</div>
-                        <div class="feature-item">Supplier Timing: 32.1d</div>
-                        <div class="feature-item">Salary Regular: 98%</div>
+                        <div class="feature-item tooltip" data-formula="balance_stability = 1 - (std_dev_balance / average_balance)">Balance Stability: 82%</div>
+                        <div class="feature-item tooltip" data-formula="min_balance_ratio = min(daily_balances) / mean(daily_balances)">Min Balance Ratio: 0.12</div>
+                        <div class="feature-item tooltip" data-formula="transaction_regularity = 1 - (std_dev(monthly_volumes) / mean(monthly_volumes))">Transaction Regular: 91%</div>
+                        <div class="feature-item tooltip" data-formula="volume_trend = linear_regression_slope(monthly_volumes)">Volume Trend: +2.3%</div>
+                        <div class="feature-item tooltip" data-formula="overdraft_frequency = overdraft_days / total_banking_days">Overdraft Freq: 3.9%</div>
+                        <div class="feature-item tooltip" data-formula="recovery_speed = mean(recovery_times)">Recovery Speed: 1.7d</div>
+                        <div class="feature-item tooltip" data-formula="cash_management_score = average_balance / monthly_revenue">Cash Mgmt Score: 1.09</div>
+                        <div class="feature-item tooltip" data-formula="balance_volatility = std_dev(daily_balances) / mean(daily_balances)">Balance Volatility: 0.18</div>
+                        <div class="feature-item tooltip" data-formula="payment_punctuality = on_time_payments / total_payments">Payment Punctual: 85%</div>
+                        <div class="feature-item tooltip" data-formula="supplier_timing = mean(days_to_pay_suppliers)">Supplier Timing: 32.1d</div>
+                        <div class="feature-item tooltip" data-formula="salary_regularity = regular_salary_payments / total_salary_payments">Salary Regular: 98%</div>
                         <div class="feature-item">Account Products: 3</div>
                     </div>
                 </div>
@@ -749,18 +869,18 @@
                         <span>Concentration & Growth</span>
                     </div>
                     <div class="feature-list">
-                        <div class="feature-item">Top Customer: 26.6%</div>
-                        <div class="feature-item">Top 3 Customers: 65.3%</div>
-                        <div class="feature-item">Herfindahl Index: 0.21</div>
-                        <div class="feature-item">AR Quality: 62.2%</div>
-                        <div class="feature-item">Bad Debt Risk: 3.3%</div>
-                        <div class="feature-item">Collection Eff: 89%</div>
-                        <div class="feature-item">Revenue Growth: 6.7%</div>
-                        <div class="feature-item">6M Growth: 4.2%</div>
-                        <div class="feature-item">Profit Growth: 12%</div>
-                        <div class="feature-item">Trend Consistency: 0.87</div>
-                        <div class="feature-item">CF Predictability: 83%</div>
-                        <div class="feature-item">Seasonal Stability: 0.75</div>
+                        <div class="feature-item tooltip" data-formula="top_customer_concentration = max(customer_revenues) / total_revenue">Top Customer: 26.6%</div>
+                        <div class="feature-item tooltip" data-formula="top_3_customer_concentration = sum(top_3_revenues) / total_revenue">Top 3 Customers: 65.3%</div>
+                        <div class="feature-item tooltip" data-formula="herfindahl_index = sum((customer_revenue_i / total_revenue)^2)">Herfindahl Index: 0.21</div>
+                        <div class="feature-item tooltip" data-formula="ar_quality_score = ar_0_30_days / total_ar">AR Quality: 62.2%</div>
+                        <div class="feature-item tooltip" data-formula="bad_debt_risk = ar_90_plus_days / total_ar">Bad Debt Risk: 3.3%</div>
+                        <div class="feature-item tooltip" data-formula="collection_efficiency = 1 - ((ar_60_90 + ar_90_plus) / total_ar)">Collection Eff: 89%</div>
+                        <div class="feature-item tooltip" data-formula="revenue_growth_12m = (current_revenue - previous_revenue) / previous_revenue">Revenue Growth: 6.7%</div>
+                        <div class="feature-item tooltip" data-formula="revenue_growth_6m = (mean(last_6m) - mean(first_6m)) / mean(first_6m)">6M Growth: 4.2%</div>
+                        <div class="feature-item tooltip" data-formula="profit_growth_12m = (current_profit - previous_profit) / previous_profit">Profit Growth: 12%</div>
+                        <div class="feature-item tooltip" data-formula="trend_consistency = r_squared(monthly_revenues)">Trend Consistency: 0.87</div>
+                        <div class="feature-item tooltip" data-formula="cash_flow_predictability = 1 - (std_dev(monthly_revenues) / mean(monthly_revenues))">CF Predictability: 83%</div>
+                        <div class="feature-item tooltip" data-formula="seasonal_stability = 1 - coefficient_of_variation(monthly_data)">Seasonal Stability: 0.75</div>
                     </div>
                 </div>
                 
@@ -770,18 +890,18 @@
                         <span>Efficiency Metrics</span>
                     </div>
                     <div class="feature-list">
-                        <div class="feature-item">Asset Turnover: 1.28</div>
-                        <div class="feature-item">Receivables Turn: 7.1x</div>
-                        <div class="feature-item">Inventory Turn: 6.0x</div>
-                        <div class="feature-item">Payables Turn: 8.4x</div>
-                        <div class="feature-item">Cash Conversion: 45d</div>
-                        <div class="feature-item">Working Cap Turn: 8.0x</div>
-                        <div class="feature-item">Fixed Asset Turn: 2.46</div>
-                        <div class="feature-item">Total Asset Turn: 1.28</div>
-                        <div class="feature-item">AR Days: 51.4</div>
-                        <div class="feature-item">AP Days: 43.5</div>
-                        <div class="feature-item">Inventory Days: 60.8</div>
-                        <div class="feature-item">Operating Cycle: 112d</div>
+                        <div class="feature-item tooltip" data-formula="asset_turnover = revenue / total_assets">Asset Turnover: 1.28</div>
+                        <div class="feature-item tooltip" data-formula="receivables_turnover = revenue / average_accounts_receivable">Receivables Turn: 7.1x</div>
+                        <div class="feature-item tooltip" data-formula="inventory_turnover = cogs / average_inventory">Inventory Turn: 6.0x</div>
+                        <div class="feature-item tooltip" data-formula="payables_turnover = cogs / average_accounts_payable">Payables Turn: 8.4x</div>
+                        <div class="feature-item tooltip" data-formula="cash_conversion_cycle = (365/receivables_turn) + (365/inventory_turn) - (365/payables_turn)">Cash Conversion: 45d</div>
+                        <div class="feature-item tooltip" data-formula="working_capital_turnover = revenue / working_capital">Working Cap Turn: 8.0x</div>
+                        <div class="feature-item tooltip" data-formula="fixed_asset_turnover = revenue / fixed_assets">Fixed Asset Turn: 2.46</div>
+                        <div class="feature-item tooltip" data-formula="total_asset_turnover = revenue / total_assets">Total Asset Turn: 1.28</div>
+                        <div class="feature-item tooltip" data-formula="ar_days = 365 / receivables_turnover">AR Days: 51.4</div>
+                        <div class="feature-item tooltip" data-formula="ap_days = 365 / payables_turnover">AP Days: 43.5</div>
+                        <div class="feature-item tooltip" data-formula="inventory_days = 365 / inventory_turnover">Inventory Days: 60.8</div>
+                        <div class="feature-item tooltip" data-formula="operating_cycle = ar_days + inventory_days">Operating Cycle: 112d</div>
                     </div>
                 </div>
             </div>
@@ -846,11 +966,13 @@
             </div>
             <p class="section-description">Comprehensive risk scoring and credit decision output</p>
             
+            <div class="hover-hint">💡 Hover over risk scores to see calculation methods</div>
+            
             <div class="output-container">
                 <h3 class="output-header">Risk Assessment Results</h3>
                 
                 <div class="risk-grid">
-                    <div class="risk-card">
+                    <div class="risk-card" data-formula="financial_risk = weighted_avg(liquidity_risk, profitability_risk, leverage_risk)">
                         <div class="risk-label">Financial Risk</div>
                         <div class="risk-value">0.28</div>
                         <div class="risk-bar">
@@ -858,7 +980,7 @@
                         </div>
                     </div>
                     
-                    <div class="risk-card">
+                    <div class="risk-card" data-formula="operational_risk = weighted_avg(concentration_risk, collection_risk, cash_mgmt_risk)">
                         <div class="risk-label">Operational Risk</div>
                         <div class="risk-value">0.32</div>
                         <div class="risk-bar">
@@ -866,7 +988,7 @@
                         </div>
                     </div>
                     
-                    <div class="risk-card">
+                    <div class="risk-card" data-formula="behavioral_risk = weighted_avg(banking_stability_risk, overdraft_risk, payment_discipline_risk)">
                         <div class="risk-label">Behavioral Risk</div>
                         <div class="risk-value">0.19</div>
                         <div class="risk-bar">
@@ -877,7 +999,7 @@
                 
                 <div class="final-score">
                     <div class="final-score-label">Composite Risk Score</div>
-                    <div class="final-score-value">0.26</div>
+                    <div class="final-score-value tooltip" data-formula="composite_risk_score = mean(financial_risk, operational_risk, behavioral_risk)">0.26</div>
                     <div class="final-rating">A- Credit Rating • Low Risk</div>
                 </div>
             </div>
